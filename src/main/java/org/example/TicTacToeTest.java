@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class TicTacToeTest {
+
     private TicTacToe game;
 
     @BeforeEach
@@ -13,30 +14,33 @@ public class TicTacToeTest {
     }
 
     @Test
-    public void testSwitchCurrentPlayer() {
+    public void testSwitchCurrentPlayerPositive() {
+        Player initialPlayer = game.getCurrentPlayer();
         game.switchCurrentPlayer();
-        assertEquals('O', game.getCurrentPlayer().getMarker()); // Positive Test
+        assertNotEquals(initialPlayer, game.getCurrentPlayer());
     }
 
     @Test
     public void testSwitchCurrentPlayerNegative() {
+        Player initialPlayer = game.getCurrentPlayer();
         game.switchCurrentPlayer();
-        assertNotEquals('X', game.getCurrentPlayer().getMarker()); // Negative Test
+        game.switchCurrentPlayer();
+        assertEquals(initialPlayer, game.getCurrentPlayer());
     }
 
     @Test
-    public void testHasWinner() {
-        game.getBoard().place(0, 0, 'X');
-        game.getBoard().place(0, 1, 'X');
-        game.getBoard().place(0, 2, 'X');
-        assertTrue(game.hasWinner()); // Positive Test
+    public void testHasWinnerPositive() {
+        game.getBoard().place(0, 0, game.getCurrentPlayer().getMarker());
+        game.getBoard().place(0, 1, game.getCurrentPlayer().getMarker());
+        game.getBoard().place(0, 2, game.getCurrentPlayer().getMarker());
+        assertTrue(game.hasWinner());
     }
 
     @Test
     public void testHasWinnerNegative() {
-        game.getBoard().place(0, 0, 'X');
-        game.getBoard().place(0, 1, 'O');
-        game.getBoard().place(0, 2, 'X');
-        assertFalse(game.hasWinner()); // Negative Test
+        game.getBoard().place(0, 0, game.getCurrentPlayer().getMarker());
+        game.getBoard().place(0, 1, game.getCurrentPlayer().getMarker());
+        game.getBoard().place(1, 2, game.getCurrentPlayer().getMarker());
+        assertFalse(game.hasWinner());
     }
 }
